@@ -40,28 +40,25 @@ def f_n(n, seed=9001):
         
     return np.sqrt(n)*f #normalizing to compare more easily
 
-def B_t(t_1, n, seed=9001):
+def B_t(n, num_occ=10000,seed=9001): #run for small values to see if conversion from list to numpy matrix works well ! 
     '''
     input:
-        t_1: int in ]0,n+2[
-        n: int the number of simulations of f_n (which is defined above)
+        n: int, where n+2 is the number of interpolating points of f_n
+        num_occ: int, the number of realisations of f_n
         seed: int the seed number of reproducibility
     output:
-        B_t_1: an array of size n where each component is a realization of f_n at time t_1
-    '''
-    if t_1>=n+2 or t_1<=0:
-        print("Warning t_1 not in ]0,1[") #to be changed into a proper warning
-              
+        B: an array of size n*n where each row is a realization of f_n
+    '''   
     np.random.seed(seed) #fixing seed for reproducibility
-    t_1=np.random.randint(1,n+1,1)[0] #outputs one random index in range(size(f_n)) excluding t_1=0 and t_1=n+2
     
-    B_t_1=np.zeros(n) #the value of the brownian process at time t_1 for different realisations of X
+    B=[] #a list of numpy arrays where the ith row corresponds to the ith realisation of the brownian bridge and 
+    #where column t_1 corresponds to the realisation of a bridge at time t_1
+    var_array=np.zeros(num_occ)
 
-    for i in range(n):
-        B_t=f_n(n,i) #for reproducibility we use fixed seeds in [0:99]
-        B_t_1[i]=B_t[t_1] 
-    
-    return B_t_1
+    for i in range(num_occ):
+        B_t=f_n(n,i) #for reproducibility we use fixed seeds in [0:n-1].   NB: the seed HAS to change as we want various realizations of f_n
+        B.append(B_t)    
+    return B 
     
     
     
