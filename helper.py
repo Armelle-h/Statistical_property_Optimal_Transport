@@ -59,8 +59,26 @@ def B_t(n, num_occ=10000,seed=9001): #run for small values to see if conversion 
         B_t=f_n(n,i) #for reproducibility we use fixed seeds in [0:n-1].   NB: the seed HAS to change as we want various realizations of f_n
         B.append(B_t)    
     return B 
+
+def t_cov(s,n):
+    '''
+    input:
+        s: int where s is in {0,...,n+1}
+        n: int where n+2 is the number of interpolating points of our brownian bridge
+    output:
+        new_t: numpy array where new_t[i] is the covariance between B_s and _{i/n+2}, {B_t}_t being a brownian bridge
+    '''
+    #write proper warning
+    if s<0 or s>n+1:
+        print("issue, s should be between 0 and ", n+1)
     
-    
+    t=np.linspace(0,1,n+2)
+    s_norm=s/(n+2)
+    list_1=(1-s_norm)*t[t<s_norm]
+    list_2=s_norm*(1-t[t>s_norm])
+    new_t=np.concatenate((list_1, list_2))
+    return new_t 
+
     
     
     
