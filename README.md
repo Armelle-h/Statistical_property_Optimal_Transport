@@ -1,3 +1,3 @@
-# Statistical_property_Optimal_Transport
+# Statistical property of Optimal Transport
 
-Semester project in mathematics under the supervision of Professor Lénaïc Chizat and his post doctoral researcher Tomas Vaškevičius.
+This repository consists of numerical simulations in the scope of my Semester project as a master student in Applied Mathematics at EPFL. This project was supervised by Professor Lénaïc Chizat and his post doctoral researcher Tomas Vaškevičius, I thank you for your support. 
