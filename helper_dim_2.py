@@ -11,22 +11,6 @@ def to_two(x,n): #converting 1d coordinates to 2d coordinates
     '''
     return(int((x-x%n)/n), x%n)
 
-def modified_norm(x):
-    '''
-    input: 
-            x: float
-    output: 
-            norm, the 2-norm except if a corrdinate is negative, we substract its square instead of adding it resulting in a non necessarily
-    positive output
-    '''
-    norm=0
-    for y in x:
-        if y<0:
-            norm-=y**2
-        else: 
-            norm+=y**2
-    return norm
-
 
 def f_n_2(n=20, seed=981):
     '''
@@ -69,9 +53,9 @@ def f_n_2(n=20, seed=981):
 
     for i in range(0,n**2):
         x_f,y_f=to_two(i,n)
-        #f_2[x_f][y_f]=np.linalg.norm(X_grid[i]-X_p[i]) #option 1, using the norm
-        #f_2[x_f][y_f]=modified_norm(X_grid[i]-X_p[i], 1)  #option 2, using modified norm
-        f_2[x_f][y_f]=np.sum(X_grid[i]-X_p[i]) #option 3, summing the coordinates, which is similar to using modified norm on the 1-norm
+        f_2[x_f][y_f]=X_grid[i,0]-X_p[i,0] #only considering the difference of first coordinate as in expectation
+        #in optimal transport, expectation of optimal cost is expectation of sum of square of square of norm which is 2 times expectation 
+        #of error of the first coordinates, assuming first and second coordinates are identically distributed (which they are)
         
     return n*f_2, X_coord, Y_coord #normalizing f_2 by sqrt(n**2)
 
@@ -96,3 +80,23 @@ def c_padded(X_coord, Y_coord):
     Y_coord_padded=np.insert(Y_coord_padded, np.shape(Y_coord_padded)[0], 1, axis=0)
     
     return X_coord_padded, Y_coord_padded
+
+def simulation_data(n=50, num_occ=10000, seed=6006):
+    '''
+    input:
+            n: int such that we assign optimaly n**2 points to the grid of size n times n defined as {1/n+1,...,n/n+1} x {1/n+1,...,n/n+1}
+            num_occ: int the number of realisations of f_n_2 
+            seed: int, the seed for reproducibility
+    output:
+            B: a (num_occ x n x n) array where the B[i,:,:] is the ith realisation of f_n_2  
+    '''
+    np.random.seed(seed) #fixing seed for reproducibility
+    
+    B=[] #a list of 2 dimensional numpy arrays where each of these numpy array correspond to a realisation of f_n_2
+    #hence if you take the coordinate (i,j) for each of the array in that list, they correspond to a realisation of 
+    #the value f_n_2(i,j)
+
+    for i in range(num_occ):
+        B_t,_,_=f_n_2(n,i) #for reproducibility we use fixed seeds in [0:n-1].   NB: the seed HAS to change as we want various realizations of f_n
+        B.append(B_t)
+    return np.array(B)

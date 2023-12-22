@@ -52,8 +52,7 @@ def B_t(n, num_occ=10000,seed=9001): #run for small values to see if conversion 
     np.random.seed(seed) #fixing seed for reproducibility
     
     B=[] #a list of numpy arrays where the ith row corresponds to the ith realisation of the brownian bridge and 
-    #where column t_1 corresponds to the realisation of a bridge at time t_1
-    var_array=np.zeros(num_occ)
+    #where column t_1 corresponds to the realisation of f_n(t_1)
 
     for i in range(num_occ):
         B_t=f_n(n,i) #for reproducibility we use fixed seeds in [0:n-1].   NB: the seed HAS to change as we want various realizations of f_n
