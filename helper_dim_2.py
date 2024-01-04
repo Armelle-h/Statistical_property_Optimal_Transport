@@ -57,7 +57,7 @@ def f_n_2(n=20, seed=981):
         #in optimal transport, expectation of optimal cost is expectation of sum of square of square of norm which is 2 times expectation 
         #of error of the first coordinates, assuming first and second coordinates are identically distributed (which they are)
         
-    return n*f_2, X_coord, Y_coord #normalizing f_2 by sqrt(n**2)
+    return np.sqrt(n)*f_2, X_coord, Y_coord #considering the displacement wrt only one coordinate, hence we normalize by sqrt(n)
 
 def c_padded(X_coord, Y_coord):
     '''

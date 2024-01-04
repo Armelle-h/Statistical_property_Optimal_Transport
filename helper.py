@@ -38,9 +38,9 @@ def f_n(n, seed=9001):
     for i in range(0,n):
         f[i+1]=Y[i]-X_p[i]
         
-    return np.sqrt(n)*f #normalizing to compare more easily
+    return np.sqrt(n)*f #normalizing
 
-def B_t(n, num_occ=10000,seed=9001): #run for small values to see if conversion from list to numpy matrix works well ! 
+def B_t(n, num_occ=10000,seed=9001):
     '''
     input:
         n: int, where n+2 is the number of interpolating points of f_n
