@@ -29,7 +29,7 @@ def f_n_2(n=20, seed=981):
     X_coord, Y_coord = np.meshgrid(x, y) #describes a grid where (X_coord[i][j], Y_coord[i][j]) described the meshed points 
 
     X_grid=np.array([[X_coord[i][j], Y_coord[i][j]] for j in range(n) for i in range(n)])
-    #a grid of the shape  [ (0,0), (0,1), ..., (0,n-1), ... , (n-1,0),...,(n-1,n-1)   ]
+    #a grid of the shape  [ (1/n+1, 1/n+1), (1/n+1, 2/n+1), ..., (1/n+1,n/n+1), ... , (n/n+1,1/n+1),...,(n/n+1,n/n+1)   ]
 
     C=np.zeros((n**2,n**2))#cost matrix, C_ij is the distance between X_i and Y_j, of size n**2 times n**2
 
@@ -53,9 +53,7 @@ def f_n_2(n=20, seed=981):
 
     for i in range(0,n**2):
         x_f,y_f=to_two(i,n)
-        f_2[x_f][y_f]=X_grid[i,0]-X_p[i,0] #only considering the difference of first coordinate as in expectation
-        #in optimal transport, expectation of optimal cost is expectation of sum of square of square of norm which is 2 times expectation 
-        #of error of the first coordinates, assuming first and second coordinates are identically distributed (which they are)
+        f_2[x_f][y_f]=X_grid[i,0]-X_p[i,0] #only considering the difference of the first coordinate
         
     return np.sqrt(n)*f_2, X_coord, Y_coord #considering the displacement wrt only one coordinate, hence we normalize by sqrt(n)
 
